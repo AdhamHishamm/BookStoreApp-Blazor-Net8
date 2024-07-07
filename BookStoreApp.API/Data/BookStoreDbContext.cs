@@ -36,7 +36,6 @@ public partial class BookStoreDbContext : DbContext
 
             entity.HasIndex(e => e.Isbn, "UQ__Books__447D36EA5D6BDD3B").IsUnique();
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.AuthorId).HasColumnName("AuthorID");
             entity.Property(e => e.Image)
                 .HasMaxLength(10)
@@ -54,7 +53,7 @@ public partial class BookStoreDbContext : DbContext
             entity.HasOne(d => d.Author).WithMany(p => p.Books)
                 .HasForeignKey(d => d.AuthorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Books_ToTable");
+                .HasConstraintName("FK_Books_ToTable");//
         });
 
         OnModelCreatingPartial(modelBuilder);
