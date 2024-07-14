@@ -28,7 +28,7 @@
 		<span class="pi pi-pencil"></span>
 		Create Author
 	</button>
-	<button @onclick="BackToList" class="btn btn-outline-secondary">
+	<button @onclick="BackToList" class="btn btn-outline-secondary" type="button">
 		<span class="pi pi-media-skip-backward"></span>
 		Back To List
 	</button>
@@ -39,7 +39,7 @@
 
 	private async Task HandleCreateAuthor()
 	{
-		var response = await authorService.CreateAuthor(Author);
+		var response = await authorService.Create(Author);
 		if (response.Success)
 		{
 			BackToList();

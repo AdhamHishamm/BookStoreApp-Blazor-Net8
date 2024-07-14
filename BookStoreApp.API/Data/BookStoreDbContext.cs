@@ -35,27 +35,27 @@ public partial class BookStoreDbContext : IdentityDbContext<ApiUser>
 
         modelBuilder.Entity<Book>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Books__3214EC07E4044D61");
+            //entity.HasKey(e => e.Id).HasName("PK__Books__3214EC07E4044D61");
 
-            entity.HasIndex(e => e.Isbn, "UQ__Books__447D36EA5D6BDD3B").IsUnique();
+			entity.HasIndex(e => e.Isbn, "UQ__Books__447D36EA5D6BDD3B").IsUnique();
 
-            entity.Property(e => e.AuthorId).HasColumnName("AuthorID");
-            entity.Property(e => e.Image)
-                .HasMaxLength(10)
-                .IsFixedLength();
+            //entity.Property(e => e.AuthorId).HasColumnName("AuthorID");
+
+            entity.Property(e => e.Image).HasMaxLength(250);
+
             entity.Property(e => e.Isbn)
-                .HasMaxLength(10)
-                .IsFixedLength()
+                .HasMaxLength(50)
                 .HasColumnName("ISBN");
+
             entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
-            entity.Property(e => e.Summary)
-                .HasMaxLength(10)
-                .IsFixedLength();
+
+            entity.Property(e => e.Summary).HasMaxLength(250);
+
             entity.Property(e => e.Title).HasMaxLength(50);
 
-            entity.HasOne(d => d.Author).WithMany(p => p.Books)
+            entity.HasOne(d => d.Author)
+                .WithMany(p => p.Books)
                 .HasForeignKey(d => d.AuthorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Books_ToTable");
         });
 

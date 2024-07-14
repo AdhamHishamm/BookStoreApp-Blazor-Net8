@@ -3,6 +3,7 @@
 @inject NavigationManager navManager
 
 <h3>Author Details</h3>
+
 <EditForm Model="Author">
 	<fieldset disabled="true">
 		<div class="form-group">
@@ -32,26 +33,30 @@
 		</div>
 	}
 	else
-	{
-		foreach(var book in Author.Books)
-		{
-			<div class="card" style="width: 18rem;">
-				<img src="@book.Image" class="card-img-top" alt="@book.Title">
-				<div class="card-body">
-					<h5 class="card-title">@book.Title - @book.Price.ToString("c")</h5>
-					<p class="card-text"></p>
-					<a href="#" class="btn btn-primary">View Book</a>
+	{	<div class="row">
+			@foreach (var book in Author.Books)
+			{
+				<div class="col-3">
+					<div class="card" style="width: 18rem;">
+						<img src="@book.Image" class="card-img-top" alt="@book.Title">
+						<div class="card-body">
+							<h5 class="card-title">@book.Title - @book.Price.ToString("c")</h5>
+							<p class="card-text"></p>
+							<a href="/books/details/@book.Id" class="btn btn-primary">View Book</a>
+						</div>
+					</div>
 				</div>
-			</div>
-		}
+			}
+		</div>	
 	}
 	<br />
 	<button @onclick="GoToEdit" class="btn btn-warning">
 		<span class="bi bi-pencil"></span>
 		Edit Author
 	</button>
-	<button @onclick="BackToList" class="btn btn-outline-secondary">
-		<span class="bi bi-media-skip-backwar"></span>
+
+	<button @onclick="BackToList" class="btn btn-outline-secondary" type="button">
+		<span class="bi bi-media-skip-backward"></span>
 		Back To List
 	</button>
 </EditForm>

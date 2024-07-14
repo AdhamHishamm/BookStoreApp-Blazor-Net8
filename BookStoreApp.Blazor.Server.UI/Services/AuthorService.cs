@@ -15,9 +15,9 @@ namespace BookStoreApp.Blazor.Server.UI.Services
 			this.mapper = mapper;
 		}
 
-        public async Task<Response<int>> CreateAuthor(AuthorCreateDto author)
+        public async Task<Response<int>> Create(AuthorCreateDto author)
         {
-            Response<int> response = new ();
+            Response<int> response = new();
 
             try
             {
@@ -49,9 +49,9 @@ namespace BookStoreApp.Blazor.Server.UI.Services
 			return response;
 		}
 
-		public async Task<Response<int>> EditAuthor(int id,AuthorUpdateDto author)
+		public async Task<Response<int>> Edit(int id,AuthorUpdateDto author)
 		{
-			Response<int> response = new ();
+			Response<int> response = new();
 
 			try
 			{
@@ -108,25 +108,41 @@ namespace BookStoreApp.Blazor.Server.UI.Services
 			return response;
 		}
 
-		public async Task<Response<AuthorUpdateDto>> GetAuthorForUpdate(int id)
+		public async Task<Response<AuthorUpdateDto>> GetForUpdate(int id)
 		{
-			Response<AuthorUpdateDto> response;
+			var response = new Response<AuthorUpdateDto>();
 
 			try
 			{
 				await GetBearerToken();
 				var data = await client.AuthorsGETAsync(id);
-				response = new Response<AuthorUpdateDto>
+
+				if (data == null)
 				{
-					Data = mapper.Map<AuthorUpdateDto>(data),
-					Success = true
-				};
+					response.Success = false;
+					response.Message = "Author data not found or null.";
+				}
+				else
+				{
+					response.Data = mapper.Map<AuthorUpdateDto>(data);
+					response.Success = true;
+				}
 			}
 			catch (ApiException exception)
 			{
 				response = ConvertApiExceptions<AuthorUpdateDto>(exception);
 			}
+			catch (Exception ex)
+			{
+				response.Success = false;
+				response.Message = $"An error occurred: {ex.Message}";
+				// Optionally log the exception for further debugging
+				Console.WriteLine($"Error in GetForUpdate: {ex}");
+			}
+
 			return response;
 		}
+
 	}
+
 }

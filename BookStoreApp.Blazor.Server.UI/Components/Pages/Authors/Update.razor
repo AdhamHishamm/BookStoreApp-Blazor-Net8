@@ -4,6 +4,7 @@
 @attribute [Authorize(Roles = Roles.Administrator)]
 
 <h3>Edit Author</h3>
+
 <EditForm Model="Author" OnValidSubmit="HandleUpdateAuthor">
 	<DataAnnotationsValidator />
 	<ValidationSummary />
@@ -20,18 +21,16 @@
 	</div>
 	<br />
 	<div class="form-group">
-		<label for="firstname">Biography</label>
+		<label for="bio">Biography</label>
 		<InputText @bind-Value="Author.Bio" class="form-control" id="bio" />
 		<ValidationMessage For="@(() => Author.Bio)" />
 	</div>
-
 	<br/>
-
 	<button class="btn btn-primary" type="submit">
 		<span class="bi bi-pencil"></span>
 		Update Author
 	</button>
-	<button @onclick="BackToList" class="btn btn-primary">
+	<button @onclick="BackToList" class="btn btn-outline-secondary" type="button">
 		<span class="bi bi-media-skip-backward"></span>
 		Back To List
 	</button>
@@ -45,7 +44,7 @@
 
 	protected async override Task OnInitializedAsync()
 	{
-		var response = await authorService.GetAuthorForUpdate(id);
+		var response = await authorService.GetForUpdate(id);
 		if (response.Success)
 		{
 			Author = response.Data;
@@ -54,7 +53,7 @@
 
 	private async Task HandleUpdateAuthor()
 	{
-		var response = await authorService.EditAuthor(id, Author);
+		var response = await authorService.Edit(id, Author);
 		if (response.Success)
 		{
 			BackToList();
@@ -63,6 +62,6 @@
 
 	private void BackToList()
 	{
-		navManager.NavigateTo("/authors");
+		navManager.NavigateTo("/authors/");
 	}
 }
